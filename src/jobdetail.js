@@ -17,6 +17,15 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import NavigationIcon from '@material-ui/icons/Navigation';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
+import ApplicationModal from './components/applicationmodal/applicationmodal';
 import {mock_data} from './MOCK_DATA';
 
 
@@ -46,12 +55,28 @@ const useStyles = makeStyles((theme) => ({
   title: {
     margin: theme.spacing(4, 0, 2),
   },
+  theme:{
+      spacing : 3,
+  }
 }));
 
 
 
 function JobDetail(props) {
 
+    function get_edu_level(level)
+    {
+        if(level==0)
+            return "<10th";
+        if(level==1)
+            return "10th";
+        if(level==2)
+            return "12th";
+        if(level==3)
+            return "Graduation";
+        if(level>=4)
+            return "Post Graduation";
+    }
     function generatejobdetails()
     {
         
@@ -59,7 +84,7 @@ function JobDetail(props) {
             if(job.id==props.match.params.id)
                 return job;
         });
-
+    
         console.log(jobdetails);
 
         if(jobdetails.length==1)
@@ -67,47 +92,83 @@ function JobDetail(props) {
             jobdetails = jobdetails[0];
             return(
                 <div>
-                    <Typography component="h1" variant="h5" align="right" paragraph="false">
+                    <Typography p={20} component="h1" variant="h5" align="right" paragraph="false">
                         Job No.- {jobdetails.id}
                     </Typography>
-                    {jobdetails.assured?<VerifiedUserIcon fontSize='large' align='right'/>:<ErrorOutlineIcon fontSize='large' color='error' align='right'/>}
-                    <Typography component="p" variant="overline" align="right" noWrap="false">
-                        
-                        {jobdetails.assured?'Assured':'Unassured'}
-                    </Typography>
+                    
+                    {jobdetails.assured?
+                        <div style={{
+                        display: 'flex',
+                        alignItems: 'right',
+                        flexWrap: 'wrap',
+                        }}>
+                            <VerifiedUserIcon color="secondary"/>
+                            <span style={{'color':'red'}}>Assured</span>
+                        </div>    
+                    :<div></div>
+                    };
+
                     <Typography component="h1" variant="h4" align="center">
                         {jobdetails.title}
                     </Typography>
+                    
                     <Typography component="p" variant="overline" align="center" noWrap="false">
                         {jobdetails.description}
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
-                        Education Level - {jobdetails.education_level}
+                    
+                    <Typography component="h2" variant="subtitle1" align="left" noWrap="false">
+                        Education Level - {get_edu_level(jobdetails.education_level)}
                     </Typography>
-                    <Typography component="p" variant="subtitle1" align="left" noWrap="false">
+
+                    <Typography component="h2" variant="subtitle1" align="left" noWrap="false">
                        Salary-  Rs.{jobdetails.salary}/month
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
-                       accomodation - {jobdetails.accomodation}
-                    </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
-                       food - {jobdetails.food}
-                    </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
+
+                    <div style={{
+                    display: 'flex',
+                    alignItems: 'right',
+                    flexWrap: 'wrap',
+                    }}>
+                        <span>Accomodation -  </span>
+                        {jobdetails.accomodation?
+                        <CheckIcon color="secondary"/>
+                        :<CloseIcon color="disabled"/>
+                        }
+                        
+                        
+                    </div> 
+
+                    <div style={{
+                    display: 'flex',
+                    alignItems: 'right',
+                    flexWrap: 'wrap',
+                    }}>
+                        <span>Food -  </span>
+                        {jobdetails.food?
+                        <CheckIcon color="secondary"/>
+                        :<CloseIcon color="disabled"/>
+                        }
+                        
+                        
+                    </div> 
+
+                    <Typography omponent="h2" variant="subtitle1" align="left" noWrap="false">
                        gender - {jobdetails.gender}
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
+                    <Typography omponent="h2" variant="subtitle1"align="left" noWrap="false">
                        company email - {jobdetails.company_email}
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
+                    <Typography omponent="h2" variant="subtitle1" align="left" noWrap="false">
                        company name - {jobdetails.company_name}
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
+                    <Typography omponent="h2" variant="subtitle1" align="left" noWrap="false">
                        company_description - {jobdetails.company_description}
                     </Typography>
-                    <Typography component="p" variant="overline" align="left" noWrap="false">
+                    <Typography omponent="h2" variant="subtitle1" align="left" noWrap="false">
                        company rating - {jobdetails.company_rating}
                     </Typography>
+
+                    <ApplicationModal/>
                 </div>
             );
 
@@ -129,7 +190,8 @@ function JobDetail(props) {
           <h1 style={{"backgroundColor":"#28282A","color":"#E74E66"}}>Job Details</h1>
           <div>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+            <Grid item xs={1}/>
+              <Grid item xs={10}>
                 <Paper className={classes.paper}>
                     {/* <h2>Job Id: {props.match.params.id}</h2> */}
                         {generatejobdetails()}

@@ -18,6 +18,8 @@ import WorkIcon from '@material-ui/icons/Work';
 
 import {mock_data} from './../../MOCK_DATA';
 
+import {Link} from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,9 +61,11 @@ function generatejoblist()
             secondary={item.company_name ? item.company_name : null}
           />
           <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="delete">
-              <ArrowForwardIcon />
-            </IconButton>
+            <Link to={`/jobdetails/${item.id}`}>
+              <IconButton edge="end" aria-label="view">
+                <ArrowForwardIcon />
+              </IconButton>
+            </Link>
           </ListItemSecondaryAction>
         </ListItem>
       );
